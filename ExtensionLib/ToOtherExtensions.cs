@@ -8,6 +8,9 @@ using System.Text.RegularExpressions;
 
 namespace System.Linq
 {
+	/// <summary>
+	/// Conversion Extensions
+	/// </summary>
 	public static class ToOtherExtensions
 	{
 		/// <summary>

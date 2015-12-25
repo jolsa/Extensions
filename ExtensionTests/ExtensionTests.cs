@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace ExtensionTests
 {
@@ -13,6 +14,14 @@ namespace ExtensionTests
 	[TestClass]
 	public class ExtensionTests
 	{
+		[TestMethod]
+		public void Test_RegexExtension()
+		{
+			var text = "Hello";
+			var test = text.RegexReplace("[eo]", ".");
+			var m = text.RegexMatches("[eo]").ToList();
+		}
+
 		[TestMethod]
 		public void Test_XmlNamespaceHelper_WithNamespaces()
 		{

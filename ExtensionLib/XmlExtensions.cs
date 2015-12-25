@@ -9,6 +9,9 @@ using System.Xml.XPath;
 
 namespace System.Xml.Linq
 {
+	/// <summary>
+	/// Xml Extensions
+	/// </summary>
 	public static class XmlExtensions
 	{
 		/// <summary>

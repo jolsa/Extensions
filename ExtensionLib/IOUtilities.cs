@@ -1,4 +1,4 @@
-﻿//	JoinExtensions: Created 12/11/2014 - Johnny Olsa
+﻿//	IOUtilties: Created 12/11/2014 - Johnny Olsa
 
 using System.Linq;
 using System.Text.RegularExpressions;
