@@ -7,6 +7,8 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml;
 using System.Text.RegularExpressions;
+using System.IO;
+using System.Data.SqlClient;
 
 namespace ExtensionTests
 {
@@ -14,6 +16,44 @@ namespace ExtensionTests
 	[TestClass]
 	public class ExtensionTests
 	{
+		[TestMethod]
+		public void Test_DataExtensions()
+		{
+			string connect = "Data Source=.;Integrated Security=SSPI;Initial Catalog=master;";
+			string query = "SELECT TOP 5 name, object_id, other = CAST(NULL AS int) FROM sys.tables ORDER BY name";
+
+			using (var cn = new SqlConnection(connect).Opened())
+			using (var cmd = new SqlCommand(query, cn))
+			using (var ds = cmd.ToDataSet())
+			using (var dt = cmd.ToDataTable())
+			{
+				var records = cmd.GetRecords();
+
+				var o1 = dt.Rows[0].GetColumn("name");
+				var o2 = dt.Rows[0].GetColumn("object_id");
+				var o3 = dt.Rows[0].GetColumn("other");
+
+				var c1 = dt.Rows[0].GetColumn<string>("name");
+				var c2 = dt.Rows[0].GetColumn<int>("object_id");
+				var c3 = dt.Rows[0].GetColumn<int?>("other");
+
+				o1 = records[0].GetColumn("name");
+				o2 = records[0].GetColumn("object_id");
+				o3 = records[0].GetColumn("other");
+
+				c1 = records[0].GetColumn<string>("name");
+				c2 = records[0].GetColumn<int>("object_id");
+				c3 = records[0].GetColumn<int>("other");
+
+				return;
+			}
+		}
+		[TestMethod]
+		public void Test_CleanPath()
+		{
+			string path = Path.GetTempPath().ToUpper();
+			string clean = IOUtilties.CleanPath(path);
+		}
 		[TestMethod]
 		public void Test_RegexExtension()
 		{
@@ -265,7 +305,7 @@ namespace ExtensionTests
 				settings.OmitXmlDeclaration = true;
 			Dump(doc.ToFormattedXmlString(settings), comment);
 		}
-		public static void Dump(this IEnumerable<string> value, string comment =  null)
+		public static void Dump(this IEnumerable<string> value, string comment = null)
 		{
 			Dump(string.Join("\r\n", value), comment);
 		}
