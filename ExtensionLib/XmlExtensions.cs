@@ -22,6 +22,14 @@ namespace System.Xml.Linq
 			return (IXmlLineInfo)value;
 		}
 		/// <summary>
+		/// Returns an attribute's value (by name) or null if the attribute doesn't exist
+		/// </summary>
+		public static string AttributeValue(this XElement value, XName name)
+		{
+			var a = value.Attribute(name);
+			return a != null ? a.Value : null;
+		}
+		/// <summary>
 		/// Returns the level for the element
 		/// </summary>
 		public static int GetLevel(this XElement value)
