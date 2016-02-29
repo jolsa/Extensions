@@ -41,6 +41,7 @@
     <Compile Include="HashExtensions.cs" />
     <Compile Include="IOUtilities.cs" />
     <Compile Include="JoinExtensions.cs" />
+    <Compile Include="NullDictionary.cs" />
     <Compile Include="RegexExtensions.cs" />
     <Compile Include="ToOtherExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

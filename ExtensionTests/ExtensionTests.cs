@@ -17,6 +17,28 @@ namespace ExtensionTests
 	public class ExtensionTests
 	{
 		[TestMethod]
+		public void Test_DictionaryMerge()
+		{
+
+			var nd = new NullDictionary<string, int?>(StringComparer.Ordinal)
+			{
+				{ "One", 1 },
+				{ "two", 22 }
+			};
+
+			var d = new Dictionary<string, int?>()
+			{
+				{ "Two", 2 },
+				{ "Three", 3 }
+			};
+
+			nd.MergeDictionary(d, DictionaryMergeOptions.OverwriteDuplicateKey);
+
+			return;
+
+
+		}
+		[TestMethod]
 		public void Test_DataExtensions()
 		{
 			string connect = "Data Source=.;Integrated Security=SSPI;Initial Catalog=master;";
