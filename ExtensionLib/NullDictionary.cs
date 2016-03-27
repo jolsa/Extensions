@@ -97,7 +97,7 @@ namespace System.Collections.Generic
 		}
 		public static NullDictionary<TKey, TElement> ToNullDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer)
 		{
-			return new NullDictionary<TKey, TElement>(source.ToDictionary(keySelector, elementSelector, comparer));
+			return new NullDictionary<TKey, TElement>(source.ToDictionary(keySelector, elementSelector, comparer), comparer);
 		}
 	}
 }
