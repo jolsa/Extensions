@@ -17,6 +17,22 @@ namespace ExtensionTests
 	public class ExtensionTests
 	{
 		[TestMethod]
+		public void Test_DateDiffs()
+		{
+			var thisDate = new DateTime(2016, 1, 2, 10, 0, 0, 11);
+			var otherDate = new DateTime(2016, 1, 3, 10, 0, 0, 10);
+
+			string diff;
+			diff = new DateTime(1967, 9, 10, 12, 0, 0).DateDiff(DateTime.Now).ToString();
+			diff = new DateTime(1973, 8, 7).DateDiff(DateTime.Now.Date).ToString();
+			diff = new DateTime(1967, 9, 10).DateDiff(new DateTime(1973, 8, 7)).ToString();
+			diff = new DateTime(1967, 9, 10).DateDiff(new DateTime(1989, 8, 21)).ToString();
+
+			diff = thisDate.DateDiff(otherDate).ToString();
+			diff = thisDate.DateDiff(otherDate).ToString(true);
+
+		}
+		[TestMethod]
 		public void Test_DictionaryMerge()
 		{
 

@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataExtensions.cs" />
+    <Compile Include="DateExtensions.cs" />
     <Compile Include="HashExtensions.cs" />
     <Compile Include="IOUtilities.cs" />
     <Compile Include="JoinExtensions.cs" />
