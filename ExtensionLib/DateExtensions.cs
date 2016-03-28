@@ -1,4 +1,5 @@
 ﻿//	DateExtensions: Created 03/27/2016 - Johnny Olsa
+using System.Linq;
 
 namespace System
 {
@@ -70,6 +71,7 @@ namespace System
 					if (format != "") format += " ";
 					format += time.ToString(@"hh\:mm\:ss\:fff");
 				}
+				if (format == "") format = "no difference";
 				return format;
 			}
 		}
@@ -91,48 +93,50 @@ namespace System
 
 			var y1 = dt1.Year;
 			var y2 = dt2.Year;
-			var m1 = dt1.Month;
-			var m2 = dt2.Month;
+			var M1 = dt1.Month;
+			var M2 = dt2.Month;
+			var d1 = dt1.Day;
+			var d2 = dt2.Day;
+			var h1 = dt1.Hour;
+			var h2 = dt2.Hour;
+			var m1 = dt1.Minute;
+			var m2 = dt2.Minute;
+			var s1 = dt1.Second;
+			var s2 = dt2.Second;
+			var f1 = dt1.Millisecond;
+			var f2 = dt2.Millisecond;
 
-			//	Working dates (remove years)
-			var td1 = dt1.AddYears(-y1 + 1);
-			var td2 = dt2.AddYears(-y2 + 1);
-
-			//	If month, day, time is greater in td2, subtract 1 year, add 12 months
-			if (td1 < td2)
+			if (f1 < f2)
 			{
-				y1--;
-				m1 += 12;
+				f1 += 1000;
+				s1--;
 			}
-			var y = y1 - y2;
-
-			//	Remove Months
-			td1 = td1.AddMonths(-td1.Month + 1);
-			td2 = td2.AddMonths(-td2.Month + 1);
-
-			//	Start with subtraction, if < 0, do the math
-			var d = dt1.Day - dt2.Day;
-			if (d < 0)
+			if (s1 < s2)
 			{
+				s1 += 60;
 				m1--;
-				//	Get EOM, then subtract dt2's day and add dt1's day
-				d = dt2.Eom().Day - dt2.Day + dt1.Day;
 			}
-			var m = m1 - m2;
-
-			//	Remove days
-			td1 = td1.AddDays(-td1.Day + 1);
-			td2 = td2.AddDays(-td2.Day + 1);
-
-			//	If time is greater in td2, subtract a day from d, but add a day for TimeSpan
-			if (td1 < td2)
+			if (m1 < m2)
 			{
-				d--;
-				td1 = td1.AddDays(1);
+				m1 += 60;
+				h1--;
 			}
-
-			var timeDiff = td1 - td2;
-			return new DateTimeDiff(y, m, d, timeDiff.Hours, timeDiff.Minutes, timeDiff.Seconds, timeDiff.Milliseconds);
+			if (h1 < h2)
+			{
+				h1 += 24;
+				d1--;
+			}
+			if (d1 < d2)
+			{
+				d1 += dt2.Eom().Day;
+				M1--;
+			}
+			if (M1 < M2)
+			{
+				M1 += 12;
+				y1--;
+			}
+			return new DateTimeDiff(y1 - y2, M1 - M2, d1 - d2, h1 - h2, m1 - m2, s1 - s2, f1 - f2);
 		}
 	}
 }
