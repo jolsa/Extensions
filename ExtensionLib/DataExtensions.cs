@@ -43,17 +43,29 @@ namespace System.Data.SqlClient
 			return table;
 		}
 		/// <summary>
-		/// Executes the command (using SqlDataReader) returning a List of IDataRecord objects.
+		/// Executes the command (using SqlDataReader) returning the first List of IDataRecord objects.
 		/// </summary>
 		public static List<IDataRecord> GetRecords(this SqlCommand command)
 		{
+			return command.GetRecordSets().First();
+		}
+		/// <summary>
+		/// Executes the command (using SqlDataReader) returning a List Lists of IDataRecord objects.
+		/// </summary>
+		public static List<List<IDataRecord>> GetRecordSets(this SqlCommand command)
+		{
+			var sets = new List<List<IDataRecord>>();
 			bool close = command.Connection.State == ConnectionState.Closed;
 			if (close)
 				command.Connection.Open();
-			var records = command.ExecuteReader().Cast<IDataRecord>().ToList();
+			var rdr = command.ExecuteReader();
+			do
+			{
+				sets.Add(rdr.Cast<IDataRecord>().ToList());
+			} while (rdr.NextResult());
 			if (close)
 				command.Connection.Close();
-			return records;
+			return sets;
 		}
 		/// <summary>
 		/// Returns the value of the specified column or null.
