@@ -39,7 +39,7 @@ namespace System.Collections.Generic
 		public NullDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer) : base(dictionary, comparer)
 		{
 			//	Ensure TValue is nullable
-			new Dictionary<string, string>(5);
+			new Dictionary<string, string>();
 			var t = typeof(TValue);
 			if (Nullable.GetUnderlyingType(t) == null && !t.IsClass)
 				throw new InvalidOperationException("TValue type must be nullable or reference type");
