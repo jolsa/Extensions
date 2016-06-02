@@ -12,6 +12,7 @@ namespace System.Xml.Linq
 	{
 		private readonly XmlNamespaceManager _nsm;
 		private readonly string _defaultPrefix;
+		private readonly string _defaultToken;
 		public XmlNamespaceHelper(XDocument xml, string defaultPrefix)
 		{
 			_defaultPrefix = defaultPrefix;
@@ -21,7 +22,16 @@ namespace System.Xml.Linq
 				.GroupBy(a => a.Name.Namespace == XNamespace.None ? defaultPrefix : a.Name.LocalName, a => XNamespace.Get(a.Value))
 				.ToList()
 				.ForEach(ns => _nsm.AddNamespace(string.IsNullOrWhiteSpace(ns.Key) ? defaultPrefix : ns.Key, ns.First().NamespaceName));
+			_defaultToken = _nsm.HasNamespace(defaultPrefix) ? defaultPrefix + ":" : "";
 		}
+		/// <summary>
+		/// Returns the default prefix used
+		/// </summary>
+		public string DefaultPrefix { get { return _defaultPrefix; } }
+		/// <summary>
+		/// Returns the default token (e.g. "x:" or "" if not default namespace is specified)
+		/// </summary>
+		public string DefaultToken { get { return _defaultToken; } }
 		/// <summary>
 		/// Returns the NamespaceManager built from the XDocument
 		/// </summary>
