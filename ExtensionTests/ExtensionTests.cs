@@ -9,6 +9,7 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Data.SqlClient;
+using ExtensionLib;
 
 namespace ExtensionTests
 {
@@ -16,6 +17,14 @@ namespace ExtensionTests
 	[TestClass]
 	public class ExtensionTests
 	{
+		[TestMethod]
+		public void Test_Interpolation()
+		{
+			string intFormat = "#,0;(#,0)";
+			string template = @"A: { a:{  intFormat  } } B: {b:{intFormat}} Text: ""{text}""";
+			string result = InterpolationPlus.FormatTemplate(template, new { intFormat }, new { a = short.MaxValue, b = int.MinValue, text = "Hello" });
+			return;
+		}
 		[TestMethod]
 		public void Test_DateDiffs()
 		{
