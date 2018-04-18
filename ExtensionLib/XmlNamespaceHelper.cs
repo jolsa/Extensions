@@ -1,6 +1,7 @@
 ﻿//	XmlNamespaceHelper: Created 11/21/2015 - Johnny Olsa
 
 using System.Linq;
+using System.Xml.XPath;
 
 namespace System.Xml.Linq
 {
@@ -17,8 +18,8 @@ namespace System.Xml.Linq
 		{
 			_defaultPrefix = defaultPrefix;
 			_nsm = new XmlNamespaceManager(new NameTable());
-			xml.Root.Attributes()
-				.Where(a => a.IsNamespaceDeclaration)
+			xml.XPathSelectElements("//*").SelectMany(e => e.Attributes())
+                .Where(a => a.IsNamespaceDeclaration)
 				.GroupBy(a => a.Name.Namespace == XNamespace.None ? defaultPrefix : a.Name.LocalName, a => XNamespace.Get(a.Value))
 				.ToList()
 				.ForEach(ns => _nsm.AddNamespace(string.IsNullOrWhiteSpace(ns.Key) ? defaultPrefix : ns.Key, ns.First().NamespaceName));
