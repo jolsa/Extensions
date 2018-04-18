@@ -11,32 +11,29 @@ namespace System.Xml.Linq
 	/// </summary>
 	public class XmlNamespaceHelper
 	{
-		private readonly XmlNamespaceManager _nsm;
-		private readonly string _defaultPrefix;
-		private readonly string _defaultToken;
 		public XmlNamespaceHelper(XDocument xml, string defaultPrefix)
 		{
-			_defaultPrefix = defaultPrefix;
-			_nsm = new XmlNamespaceManager(new NameTable());
+			DefaultPrefix = defaultPrefix;
+			NamespaceManager = new XmlNamespaceManager(new NameTable());
 			xml.XPathSelectElements("//*").SelectMany(e => e.Attributes())
                 .Where(a => a.IsNamespaceDeclaration)
 				.GroupBy(a => a.Name.Namespace == XNamespace.None ? defaultPrefix : a.Name.LocalName, a => XNamespace.Get(a.Value))
 				.ToList()
-				.ForEach(ns => _nsm.AddNamespace(string.IsNullOrWhiteSpace(ns.Key) ? defaultPrefix : ns.Key, ns.First().NamespaceName));
-			_defaultToken = _nsm.HasNamespace(defaultPrefix) ? defaultPrefix + ":" : "";
+				.ForEach(ns => NamespaceManager.AddNamespace(string.IsNullOrWhiteSpace(ns.Key) ? defaultPrefix : ns.Key, ns.First().NamespaceName));
+			DefaultToken = NamespaceManager.HasNamespace(defaultPrefix) ? defaultPrefix + ":" : "";
 		}
 		/// <summary>
 		/// Returns the default prefix used
 		/// </summary>
-		public string DefaultPrefix { get { return _defaultPrefix; } }
+		public string DefaultPrefix { get; }
 		/// <summary>
 		/// Returns the default token (e.g. "x:" or "" if not default namespace is specified)
 		/// </summary>
-		public string DefaultToken { get { return _defaultToken; } }
+		public string DefaultToken { get; }
 		/// <summary>
 		/// Returns the NamespaceManager built from the XDocument
 		/// </summary>
-		public XmlNamespaceManager NamespaceManager { get { return _nsm; } }
+		public XmlNamespaceManager NamespaceManager { get; }
 		/// <summary>
 		/// Get the XName for an element with no namespace
 		/// </summary>
@@ -51,7 +48,7 @@ namespace System.Xml.Linq
 		/// <param name="prefix">The prefix for the namespace</param>
 		public XName GetXName(string element, string prefix)
 		{
-			return XName.Get(element, _nsm.LookupNamespace(prefix ?? _defaultPrefix) ?? "");
+			return XName.Get(element, NamespaceManager.LookupNamespace(prefix ?? DefaultPrefix) ?? "");
 		}
 	}
 }
